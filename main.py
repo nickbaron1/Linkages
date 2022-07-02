@@ -17,6 +17,7 @@ class FourBarLinkage:
         self.p2, self.p3 = None, None
         self.set_position(np.pi/2)  # set p2 and p3
 
+
     def set_position(self, theta):
         # From theta (orientation of p1->p2) compute p2 and p3
         self.p2 = self.p1 + np.array(self.d12*[[np.cos(theta)], [np.sin(theta)]])
@@ -34,14 +35,25 @@ class FourBarLinkage:
         v12 = p2 - p1  # vector from p1 to p2
         p3 = p1 + np.matmul(Z, v12)
 
-
         return p3
 
     def plot(self):
+        plt.cla()
+        plt.axis([-1, 2, -1.5, 1.5])
         plt.plot([self.p1[0], self.p2[0]], [self.p1[1], self.p2[1]])
         plt.plot([self.p2[0], self.p3[0]], [self.p2[1], self.p3[1]])
         plt.plot([self.p3[0], self.p4[0]], [self.p3[1], self.p4[1]])
+        plt.draw()
+
+    def run_trajectory(self):
+        plt.axis([-1, 2, -1.5, 1.5])
+        plt.ion()
         plt.show()
+
+        for theta in np.arange(0, np.pi, np.pi/100):
+            self.set_position(theta)
+            self.plot()
+            plt.pause(0.001)
 
 
 def main():
@@ -52,7 +64,7 @@ def main():
     print('p2 at: ', fbl.p2[0], fbl.p2[1])
     print('p3 at: ', fbl.p3[0], fbl.p3[1])
     print('p4 at: ', fbl.p4[0], fbl.p4[1])
-    fbl.plot()
+    fbl.run_trajectory()
 
 
 
